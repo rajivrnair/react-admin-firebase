@@ -2,6 +2,7 @@ import {
   CollectionReference,
   OrderByDirection,
   Query,
+  WhereFilterOp
 } from '@firebase/firestore-types';
 import { IFirestoreLogger, messageTypes } from '../../misc';
 import { findLastQueryCursor, getQueryCursor } from './queryCursors';
@@ -52,10 +53,10 @@ export function filtersToQuery(
   filters: { [fieldName: string]: any }
 ): Query {
   Object.keys(filters).forEach((fieldName) => {
-    if (fieldName.indexOf("_*") !== -1) {
-      var actualField = fieldName.split('_*')[0];
-      var term = filters[fieldName]
-      query = query.where(actualField, '>=', term).where(actualField, '<=', term + '~');
+    if (fieldName.indexOf("|op=") !== -1) {
+      const [actualField, operator] = fieldName.split('|op=');
+      var term = (operator === 'array-contains-any')? filters[fieldName].split(' ') : filters[fieldName];
+      query = query.where(actualField, operator as WhereFilterOp, term);
     } else {
       query = query.where(fieldName, '==', filters[fieldName]);
     }
