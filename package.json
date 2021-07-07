@@ -1,7 +1,11 @@
 {
   "name": "react-admin-firebase",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rajivrnair/react-admin-firebase.git"
+  },
   "description": "A firebase data provider for the React Admin framework",
-  "version": "3.2.16",
+  "version": "3.2.17",
   "peerDependencies": {
     "firebase": "^7.9.x",
     "react": "^17.x",
@@ -29,13 +33,13 @@
     "@types/rx": "^4.1.1",
     "cpx": "^1.5.0",
     "del": "^3.0.0",
-    "ra-core": "3.10.0",
     "firebase": "^7.9.1",
     "firebase-tools": "^8.1.1",
     "gulp": "^3.9.1",
     "gulp-sequence": "^1.0.0",
     "jest": "^23.6.0",
     "microbundle": "^0.12.4",
+    "ra-core": "3.10.0",
     "ts-jest": "^25",
     "tslint": "^5.16.0",
     "typescript": "^4.1.x"
@@ -49,7 +53,8 @@
     "start-demo": "gulp start-demo",
     "start-emulator": "yarn firebase emulators:start --only firestore",
     "test": "yarn firebase emulators:exec \"yarn jest --forceExit --detectOpenHandles\"",
-    "test-watch": "yarn firebase emulators:exec \"yarn jest --watchAll --detectOpenHandles\""
+    "test-watch": "yarn firebase emulators:exec \"yarn jest --watchAll --detectOpenHandles\"",
+    "prepare": "yarn build"
   },
   "files": [
     "dist",
