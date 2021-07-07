@@ -37,21 +37,28 @@ export async function paramsToQuery<
 
   return options.pagination
     ? paginationToQuery(
-        sortStepQuery,
-        params,
-        collection,
-        resourceName,
-        flogger
-      )
+      sortStepQuery,
+      params,
+      collection,
+      resourceName,
+      flogger
+    )
     : sortStepQuery;
 }
 
+// See https://stackoverflow.com/a/67092195/566434
 export function filtersToQuery(
   query: Query,
   filters: { [fieldName: string]: any }
 ): Query {
   Object.keys(filters).forEach((fieldName) => {
-    query = query.where(fieldName, '==', filters[fieldName]);
+    if (fieldName.indexOf("_*") !== -1) {
+      var actualField = fieldName.split('_*')[0];
+      var term = filters[fieldName]
+      query = query.where(actualField, '>=', term).where(actualField, '<=', term + '~');
+    } else {
+      query = query.where(fieldName, '==', filters[fieldName]);
+    }
   });
   return query;
 }
@@ -107,9 +114,9 @@ export function getFullParamsForQuery<
     ...reactAdminParams,
     filter: softdeleteEnabled
       ? {
-          deleted: false,
-          ...reactAdminParams.filter,
-        }
+        deleted: false,
+        ...reactAdminParams.filter,
+      }
       : reactAdminParams.filter,
   };
 }
